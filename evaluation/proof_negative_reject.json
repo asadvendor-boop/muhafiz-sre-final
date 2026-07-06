@@ -1,0 +1,68 @@
+{
+  "test": "negative_authority_reject",
+  "timestamp": "2026-06-26T17:31:25+0500",
+  "steps": [
+    {
+      "step": "services_healthy",
+      "status": "PASS",
+      "time": "17:31:25"
+    },
+    {
+      "step": "victim_healthy",
+      "status": "PASS",
+      "time": "17:31:25",
+      "details": "status=200"
+    },
+    {
+      "step": "inject_fault",
+      "status": "PASS",
+      "time": "17:31:25"
+    },
+    {
+      "step": "victim_503",
+      "status": "PASS",
+      "time": "17:31:25",
+      "details": "status=503"
+    },
+    {
+      "step": "create_incident",
+      "status": "PASS",
+      "time": "17:31:25",
+      "details": "incident_id=INC-45A55A74"
+    },
+    {
+      "step": "awaiting_approval",
+      "status": "PASS",
+      "time": "17:32:46",
+      "details": "took 81s"
+    },
+    {
+      "step": "get_contract",
+      "status": "PASS",
+      "time": "17:32:46",
+      "details": "contract_id=CON-6DF5D8D8"
+    },
+    {
+      "step": "reject_contract",
+      "status": "PASS",
+      "time": "17:32:46",
+      "details": "response=rejected"
+    },
+    {
+      "step": "incident_rejected",
+      "status": "PASS",
+      "time": "17:32:49",
+      "details": "status=REJECTED"
+    },
+    {
+      "step": "victim_still_503",
+      "status": "PASS",
+      "time": "17:32:49",
+      "details": "status=503 \u2014 NO MUTATION OCCURRED"
+    }
+  ],
+  "status": "PASSED",
+  "incident_id": "INC-45A55A74",
+  "contract_id": "CON-6DF5D8D8",
+  "final_incident_status": "REJECTED"
+}

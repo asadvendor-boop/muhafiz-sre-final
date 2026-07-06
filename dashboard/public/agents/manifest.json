@@ -1,0 +1,139 @@
+{
+  "export_preset": {
+    "format": "WebP",
+    "quality": 92,
+    "method": 6,
+    "portrait_size_px": [
+      1120,
+      1400
+    ],
+    "avatar_size_px": [
+      512,
+      512
+    ],
+    "grading": "contrast 1.02, saturation 1.03, subtle radial vignette",
+    "notes": "Portraits use 4:5 card crop. Avatars use square tighter face crop for small UI display."
+  },
+  "files": [
+    {
+      "filename": "nigehban-portrait.webp",
+      "agent": "nigehban",
+      "role": "female commander",
+      "accent": "teal",
+      "kind": "portrait",
+      "size_px": [
+        1120,
+        1400
+      ],
+      "bytes": 148428
+    },
+    {
+      "filename": "nigehban-avatar.webp",
+      "agent": "nigehban",
+      "role": "female commander",
+      "accent": "teal",
+      "kind": "avatar",
+      "size_px": [
+        512,
+        512
+      ],
+      "bytes": 41850
+    },
+    {
+      "filename": "muhaqqiq-portrait.webp",
+      "agent": "muhaqqiq",
+      "role": "male investigator with glasses",
+      "accent": "blue",
+      "kind": "portrait",
+      "size_px": [
+        1120,
+        1400
+      ],
+      "bytes": 152848
+    },
+    {
+      "filename": "muhaqqiq-avatar.webp",
+      "agent": "muhaqqiq",
+      "role": "male investigator with glasses",
+      "accent": "blue",
+      "kind": "avatar",
+      "size_px": [
+        512,
+        512
+      ],
+      "bytes": 37374
+    },
+    {
+      "filename": "mudabbir-portrait.webp",
+      "agent": "mudabbir",
+      "role": "female strategist",
+      "accent": "violet",
+      "kind": "portrait",
+      "size_px": [
+        1120,
+        1400
+      ],
+      "bytes": 173868
+    },
+    {
+      "filename": "mudabbir-avatar.webp",
+      "agent": "mudabbir",
+      "role": "female strategist",
+      "accent": "violet",
+      "kind": "avatar",
+      "size_px": [
+        512,
+        512
+      ],
+      "bytes": 46434
+    },
+    {
+      "filename": "muhtasib-portrait.webp",
+      "agent": "muhtasib",
+      "role": "senior controller with tablet",
+      "accent": "amber",
+      "kind": "portrait",
+      "size_px": [
+        1120,
+        1400
+      ],
+      "bytes": 173634
+    },
+    {
+      "filename": "muhtasib-avatar.webp",
+      "agent": "muhtasib",
+      "role": "senior controller with tablet",
+      "accent": "amber",
+      "kind": "avatar",
+      "size_px": [
+        512,
+        512
+      ],
+      "bytes": 43552
+    },
+    {
+      "filename": "aamil-portrait.webp",
+      "agent": "aamil",
+      "role": "male executor",
+      "accent": "coral",
+      "kind": "portrait",
+      "size_px": [
+        1120,
+        1400
+      ],
+      "bytes": 108432
+    },
+    {
+      "filename": "aamil-avatar.webp",
+      "agent": "aamil",
+      "role": "male executor",
+      "accent": "coral",
+      "kind": "avatar",
+      "size_px": [
+        512,
+        512
+      ],
+      "bytes": 35920
+    }
+  ]
+}

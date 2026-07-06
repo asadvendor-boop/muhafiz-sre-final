@@ -1,0 +1,53 @@
+{
+  "test": "negative_authority_matrix",
+  "timestamp": "2026-06-26T17:51:10+0500",
+  "tests": [
+    {
+      "name": "tampered_token",
+      "steps": [
+        {
+          "step": "tampered_token_rejected",
+          "status": "PASS",
+          "details": "status=403"
+        },
+        {
+          "step": "victim_still_503_after_tamper",
+          "status": "PASS",
+          "details": "status=503"
+        }
+      ]
+    },
+    {
+      "name": "tampered_revision",
+      "steps": [
+        {
+          "step": "tampered_revision_rejected",
+          "status": "PASS",
+          "details": "status=409"
+        },
+        {
+          "step": "victim_still_503_after_revision_tamper",
+          "status": "PASS",
+          "details": "status=503"
+        }
+      ]
+    },
+    {
+      "name": "duplicate_approval",
+      "steps": [
+        {
+          "step": "first_approval_accepted",
+          "status": "PASS",
+          "details": "status=200"
+        },
+        {
+          "step": "duplicate_approval_rejected",
+          "status": "PASS",
+          "details": "status=403"
+        }
+      ]
+    }
+  ],
+  "status": "PASSED",
+  "incident_id": "INC-DB06C0F6"
+}

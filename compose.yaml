@@ -1,0 +1,82 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MuhafizSRE — Docker Compose Stack
+# ═══════════════════════════════════════════════════════════════════════════════
+# Orchestrates three services:
+#   1. gateway     — Main FastAPI server (incident API, agent orchestration)
+#   2. victim      — Simulated auth-service for fault-injection testing
+#   3. dashboard   — Next.js observability dashboard
+#
+# Usage:
+#   docker compose up --build        # Start all services
+#   docker compose up gateway victim # Start without dashboard
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ── MuhafizSRE Gateway ──────────────────────────────────────────────────────
+  # The core API server that receives alerts, orchestrates the AI agent,
+  # and exposes incident management endpoints.
+  gateway:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MUHAFIZ_APPROVAL_SECRET=${MUHAFIZ_APPROVAL_SECRET:-default-dev-secret-at-least-32-characters-long}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - MUHAFIZ_TEST_MODE=true
+      - MUHAFIZ_DB_PATH=/data/muhafiz.db
+      - MUHAFIZ_EXECUTION_MODE=${MUHAFIZ_EXECUTION_MODE:-simulated}
+    volumes:
+      - muhafiz-data:/data
+    depends_on:
+      victim:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+
+  # ── Victim Service (Simulated auth-service) ────────────────────────────────
+  # A lightweight FastAPI app that simulates the auth-service microservice.
+  # Supports programmable fault injection and recovery endpoints for
+  # evaluating the AI agent's incident remediation capabilities.
+  victim:
+    build: evaluation/victim
+    ports:
+      - "9000:9000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/status')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  # ── Observability Dashboard ────────────────────────────────────────────────
+  # Next.js dashboard for monitoring incidents, viewing agent decisions,
+  # and inspecting telemetry data.
+  dashboard:
+    build:
+      context: ./dashboard
+      dockerfile: Dockerfile
+      args:
+        GATEWAY_INTERNAL_URL: http://gateway:8000
+        NEXT_PUBLIC_GATEWAY_URL: http://localhost:8000
+    ports:
+      - "3000:3000"
+    environment:
+      - GATEWAY_INTERNAL_URL=http://gateway:8000
+      - NEXT_PUBLIC_GATEWAY_URL=http://localhost:8000
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      gateway:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://127.0.0.1:3000"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  muhafiz-data:
+

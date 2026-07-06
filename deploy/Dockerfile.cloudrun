@@ -1,0 +1,92 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MuhafizSRE — Unified Dockerfile (Gateway + Dashboard)
+# Single container for Cloud Run with GCS FUSE volume mount
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# ─── Stage 1: Build Python Backend ────────────────────────────────────────────
+FROM python:3.12-slim AS python-builder
+
+WORKDIR /build
+
+# Install uv for fast dependency resolution
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
+
+# Copy dependency manifests first for layer caching
+COPY pyproject.toml uv.lock README.md ./
+COPY agents/ ./agents/
+COPY gateway/ ./gateway/
+COPY shared/ ./shared/
+COPY evaluation/ ./evaluation/
+
+# Install with frozen lockfile — reproducible builds
+RUN uv sync --frozen --all-extras --no-dev
+
+# ─── Stage 2: Build Next.js Dashboard ────────────────────────────────────────
+FROM node:20-alpine AS node-builder
+
+WORKDIR /dashboard
+
+# In single-container mode, Next.js rewrites target localhost
+ENV GATEWAY_INTERNAL_URL=http://localhost:8000
+ENV NEXT_PUBLIC_GATEWAY_URL=
+
+COPY dashboard/package.json dashboard/package-lock.json* ./
+RUN npm install --ignore-scripts=false
+
+COPY dashboard/ ./
+ENV NEXT_PUBLIC_DEPLOY_ENV=cloudrun
+RUN npm run build
+
+# ─── Stage 3: Production Runtime ─────────────────────────────────────────────
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install Node.js 20 (for Next.js standalone server)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl bash && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y --no-install-recommends nodejs && \
+    apt-get purge -y curl && \
+    apt-get autoremove -y && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy Python virtualenv from builder
+COPY --from=python-builder /build/.venv /app/.venv
+ENV PATH="/app/.venv/bin:$PATH"
+
+# Copy Python application source
+COPY agents/ ./agents/
+COPY gateway/ ./gateway/
+COPY shared/ ./shared/
+COPY evaluation/ ./evaluation/
+
+# Copy Next.js standalone build
+COPY --from=node-builder /dashboard/public ./dashboard/public
+COPY --from=node-builder /dashboard/.next/standalone ./dashboard
+COPY --from=node-builder /dashboard/.next/static ./dashboard/.next/static
+
+# Copy entrypoint
+COPY deploy/entrypoint.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+# Security: non-root user
+RUN groupadd -r muhafiz && \
+    useradd -r -g muhafiz -d /app -s /sbin/nologin muhafiz && \
+    mkdir -p /data && \
+    chown -R muhafiz:muhafiz /app && \
+    chown -R muhafiz:muhafiz /data
+
+USER muhafiz
+
+# Cloud Run sets PORT env var (default 3000 for Next.js)
+ENV PORT=3000
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV GATEWAY_INTERNAL_URL=http://localhost:8000
+ENV NEXT_PUBLIC_GATEWAY_URL=
+ENV MUHAFIZ_DB_PATH=/tmp/muhafiz.db
+
+EXPOSE 3000
+
+CMD ["/app/entrypoint.sh"]

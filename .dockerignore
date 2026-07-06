@@ -1,0 +1,6 @@
+node_modules
+.next
+dashboard/node_modules
+dashboard/.next
+.git
+*.log

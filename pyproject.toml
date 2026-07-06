@@ -1,0 +1,83 @@
+# ───────────────────────────────────────────────────────────────────────────────
+# MuhafizSRE: Incident Command Room
+# Project Configuration
+# ───────────────────────────────────────────────────────────────────────────────
+# Kaggle AI Agents Capstone — Track 2: Agents for Business
+# Google-native dependency matrix using ADK 2.x, Gemini, MCP, and FastAPI.
+# ───────────────────────────────────────────────────────────────────────────────
+
+[project]
+name = "muhafizsre"
+version = "5.0.0"
+description = "MuhafizSRE: Incident Command Room — A multi-agent SRE system with operator-governed incident response, built with Google ADK 2.x and Gemini."
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.12"
+authors = [
+    {name = "Syed Asad Ali"}
+]
+keywords = [
+    "ai-agents",
+    "incident-response",
+    "sre",
+    "google-adk",
+    "mcp",
+    "multi-agent-system",
+    "gemini",
+    "incident-command-room"
+]
+
+# ─── Core Dependencies ───────────────────────────────────────────────────────
+dependencies = [
+    # Google Agent Development Kit 2.x — dynamic workflow orchestration
+    "google-adk>=2.3.0,<3.0.0",
+
+    # Model Context Protocol — standardized tool/server interop
+    "mcp>=1.0.0,<2.0.0",
+
+    # FastAPI — async gateway for human approval workflows
+    "fastapi>=0.115.0,<1.0.0",
+
+    # Uvicorn — ASGI server
+    "uvicorn[standard]>=0.30.0,<1.0.0",
+
+    # Pydantic v2 — data validation for structured outputs
+    "pydantic>=2.7.0,<3.0.0",
+
+    # aiosqlite — async SQLite for persistent store
+    "aiosqlite>=0.20.0,<1.0.0",
+
+    # httpx — async HTTP client for victim service and skill adapters
+    "httpx>=0.27.0,<1.0.0",
+
+    # Python-dotenv — environment variable loading
+    "python-dotenv>=1.0.0,<2.0.0",
+
+    # SSE-starlette — Server-Sent Events for live timeline
+    "sse-starlette>=2.0.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "httpx>=0.27.0",
+    "ruff>=0.4.0",
+]
+
+# ─── Build System ─────────────────────────────────────────────────────────────
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# ─── Tool Configuration ──────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["agents", "gateway", "shared", "evaluation"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

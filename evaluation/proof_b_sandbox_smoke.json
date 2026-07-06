@@ -1,0 +1,82 @@
+{
+  "test": "sandbox_smoke_proof_b",
+  "timestamp": "2026-06-26T17:11:56+0500",
+  "steps": [
+    {
+      "step": "services_healthy",
+      "status": "PASS",
+      "time": "17:11:56"
+    },
+    {
+      "step": "victim_initially_healthy",
+      "status": "PASS",
+      "time": "17:11:56",
+      "details": "status=200"
+    },
+    {
+      "step": "inject_fault",
+      "status": "PASS",
+      "time": "17:11:56",
+      "details": "status=200"
+    },
+    {
+      "step": "victim_unhealthy_503",
+      "status": "PASS",
+      "time": "17:11:56",
+      "details": "status=503"
+    },
+    {
+      "step": "create_incident",
+      "status": "PASS",
+      "time": "17:11:56",
+      "details": "incident_id=INC-AFC1CF04"
+    },
+    {
+      "step": "awaiting_approval",
+      "status": "PASS",
+      "time": "17:13:37"
+    },
+    {
+      "step": "get_contract",
+      "status": "PASS",
+      "time": "17:13:37",
+      "details": "contract_id=CON-0C526AA8"
+    },
+    {
+      "step": "approve_contract",
+      "status": "PASS",
+      "time": "17:13:37"
+    },
+    {
+      "step": "final_status",
+      "status": "PASS",
+      "time": "17:13:47",
+      "details": "status=RESOLVED"
+    },
+    {
+      "step": "victim_recovered_200",
+      "status": "PASS",
+      "time": "17:13:47",
+      "details": "status=200 body={'status': 'healthy', 'version': 'v2.1.0', 'latency_ms': 50}"
+    }
+  ],
+  "status": "PASSED",
+  "incident_id": "INC-AFC1CF04",
+  "audit": {
+    "incident_id": "INC-AFC1CF04",
+    "status": "RESOLVED",
+    "severity": "P1",
+    "service_id": "auth-service",
+    "summary": "Error rate spike to 100% on auth-service after deployment v2.4.1",
+    "alert_json": "{\"alert_type\":\"error_rate\",\"error_message\":\"HTTP 503 Service Unavailable \u2014 upstream connection refused on auth-service:8443\",\"service_id\":\"auth-service\",\"severity\":\"P1\",\"summary\":\"Error rate spike to 100% on auth-service after deployment v2.4.1\",\"timestamp\":\"2026-06-26T17:11:56Z\"}",
+    "scenario_id": "bad_deployment",
+    "active_run_id": "RUN-373FFD92",
+    "active_revision": 0,
+    "final_event_hash": "b25f9693b0e1c2b2c793f9a24662611ebaacf4ba5c16ee2235579a4e2cfeb117",
+    "approved_by": null,
+    "session_data": null,
+    "created_at": "2026-06-26T12:11:56.176456+00:00",
+    "updated_at": "2026-06-26T12:13:40.144489+00:00"
+  },
+  "final_incident_status": "RESOLVED"
+}

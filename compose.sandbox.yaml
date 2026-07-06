@@ -1,0 +1,24 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# MuhafizSRE — Sandbox Override
+# ═══════════════════════════════════════════════════════════════════════════════
+# Enables real victim-service mutations for sandbox testing.
+#
+# Usage:
+#   docker compose -f compose.yaml -f compose.sandbox.yaml up --build
+#
+# This override:
+#   - Sets MUHAFIZ_EXECUTION_MODE=sandbox on the gateway
+#   - Sets MUHAFIZ_SANDBOX_TARGET_SERVICE=payment-gateway (default target)
+#   - Injects a fault on the victim service at startup for demo
+#
+# ⚠️  DO NOT use this for the 21-run evaluation benchmark.
+#     The benchmark MUST use the default compose.yaml (simulated mode)
+#     to maintain deterministic reproducibility.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+  gateway:
+    environment:
+      - MUHAFIZ_EXECUTION_MODE=sandbox
+      - MUHAFIZ_SANDBOX_TARGET_SERVICE=payment-gateway
+      - VICTIM_SERVICE_URL=http://victim:9000

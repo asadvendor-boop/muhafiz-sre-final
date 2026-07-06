@@ -1,0 +1,78 @@
+# ───────────────────────────────────────────────────────────────────────────────
+# MuhafizSRE: Autonomous Incident Guardian
+# ───────────────────────────────────────────────────────────────────────────────
+# Built for the Kaggle AI Agents: Intensive Vibe Coding Capstone Project
+# Track 2: Agents for Business
+#
+# This project demonstrates:
+#   1. Multi-Agent System using Google Agent Development Kit (ADK)
+#   2. Model Context Protocol (MCP) Server for telemetry ingestion
+#   3. Agent Skills for remediation actions
+#   4. Security features (SHA-256 hash-chained audit ledger)
+#   5. Cloud Run deployability (Dockerfile + cloudbuild.yaml)
+#   6. Recovery verification (post-incident health check)
+# ───────────────────────────────────────────────────────────────────────────────
+
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment and secrets - NEVER commit these
+.env
+*.pem
+*.key
+
+# Database files (runtime only, not source)
+*.db
+*.sqlite
+*.sqlite3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node / Dashboard
+node_modules/
+.next/
+dashboard/.next/
+dashboard/node_modules/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# Logs
+logs/
+*.log
+
+# Ablation experiment artifacts (evaluation-only, not shipped)
+data/ablation_*.db
+evaluation/ablation/experimental_no_muhtasib_patch.diff
+evaluation/ablation/probe_baseline_7run.json
+evaluation/ablation/review/
+
+# Internal docs — not for submission
+VIDEO_SCRIPT.md
+SUBMISSION_CHECKLIST.md
+
+# Local tooling
+.claude/
+
+# Stale working copies and local scripts — not for submission
+dashboard/patch-files/
+dashboard/scripts/process_portraits.sh
+docs/architecture.jpg
